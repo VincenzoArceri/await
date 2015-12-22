@@ -12,6 +12,7 @@ module AWAIT-SYN
                 | "(" AExp ")"            [bracket]
   
   syntax BExp ::= Bool
+                | "randomBool"            
                 | AExp "<" AExp           [strict, non-assoc]
                 | AExp "<=" AExp          [strict, non-assoc]
                 | AExp ">" AExp           [strict, non-assoc]
@@ -35,8 +36,7 @@ module AWAIT-SYN
                 | "while" "(" BExp ")" Block
                 | "print" "(" AExp ")" ";"              	          [strict]
                 | "await" BExp "protected" Block
-                | Block	"||" Block	//TODO
-                | Block "+" Block		//TODO			
+                | Block	"par" Block            
 
   syntax Block ::= "{" Stmts "}" | "{" "}" 
                   
@@ -157,9 +157,18 @@ module AWAIT
   			<id> T:Int </id>
   			<barrier> S SetItem(T) </barrier>
 
+  rule randomBool => true  [random]
+  rule randomBool => false [random]
+
+  rule Bl1:Block par Bl2:Block => Bl1 [choice]
+  rule Bl1:Block par Bl2:Block => Bl2 [choice]
+
   syntax UDF ::= "remove" Int ";"
 
   rule	<k> remove T:Int ; => .K ... </k>
   			<barrier> Barrier:Set => Barrier -Set SetItem(T) </barrier>
+
+
+
 
 endmodule
