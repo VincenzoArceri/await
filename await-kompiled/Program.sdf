@@ -218,7 +218,6 @@ context-free syntax
     String -> TCPAnswer {}
     "#substituteKArrow" "(" InsertDzK "," InsertDzMap "," InsertDzK "," InsertDzK ")" -> K {cons("K1357Syn")}
     "await" InsertDzBExp "protected" Block -> Stmt {cons("Stmt1498Syn")}
-    Block "par" Block -> Stmt {cons("Stmt1499Syn")}
     "{" "}" -> Block {cons("Block1502Syn")}
     "(" InsertDzAExp ")" -> AExp {cons("AExp1Bracket")}
     "rtrim" "(" InsertDzString ")" -> String {cons("String1227Syn")}
@@ -344,6 +343,7 @@ context-free syntax
     "Set2KLabel" Set -> KLabel {cons("KLabel1296Syn")}
     "isBound" "(" InsertDzKLabel "," InsertDzInt ")" -> Bool {cons("Bool1329Syn")}
     String ">String" String -> Bool {cons("Bool1232Syn")}
+    "parallelSpawn" "(" InsertDzBlock "," InsertDzBlock ")" ";" -> Stmt {cons("Stmt1499Syn")}
     "#substituteBinder2" "(" InsertDzK "," InsertDzMap "," InsertDzK "," InsertDzK ")" -> K {cons("K1360Syn")}
     "#tokenToString" "(" InsertDzK ")" -> String {cons("String1242Syn")}
     "Char2String" "(" InsertDzChar ")" -> String {cons("String1236Syn")}
@@ -468,8 +468,8 @@ lexical syntax
     "Map2KLabel" -> IdDz {reject}
     "randomBool" -> IdDz {reject}
     "lengthString" -> IdDz {reject}
-    "par" -> IdDz {reject}
     "ltrim" -> IdDz {reject}
+    "parallelSpawn" -> IdDz {reject}
     "isBuiltin" -> IdDz {reject}
     "orBool" -> IdDz {reject}
     "isSymbolicBag" -> IdDz {reject}
@@ -752,10 +752,10 @@ lexical syntax
     "#substituteBinder2" -> DzStringDz {reject}
     "#substMap" -> DzStringDz {reject}
     "#isTCPError" -> DzStringDz {reject}
-    "par" -> DzStringDz {reject}
     "#EISDIR" -> DzStringDz {reject}
     "#isMapInK" -> DzStringDz {reject}
     "ltrim" -> DzStringDz {reject}
+    "parallelSpawn" -> DzStringDz {reject}
     "=/=List" -> DzStringDz {reject}
     "#patternMatch" -> DzStringDz {reject}
     "~Int" -> DzStringDz {reject}
@@ -1039,10 +1039,10 @@ lexical syntax
     "#substituteBinder2" -> IdDz {reject}
     "#substMap" -> IdDz {reject}
     "#isTCPError" -> IdDz {reject}
-    "par" -> IdDz {reject}
     "#EISDIR" -> IdDz {reject}
     "#isMapInK" -> IdDz {reject}
     "ltrim" -> IdDz {reject}
+    "parallelSpawn" -> IdDz {reject}
     "=/=List" -> IdDz {reject}
     "#patternMatch" -> IdDz {reject}
     "~Int" -> IdDz {reject}
@@ -1326,10 +1326,10 @@ lexical syntax
     "#substituteBinder2" -> DzIntDz {reject}
     "#substMap" -> DzIntDz {reject}
     "#isTCPError" -> DzIntDz {reject}
-    "par" -> DzIntDz {reject}
     "#EISDIR" -> DzIntDz {reject}
     "#isMapInK" -> DzIntDz {reject}
     "ltrim" -> DzIntDz {reject}
+    "parallelSpawn" -> DzIntDz {reject}
     "=/=List" -> DzIntDz {reject}
     "#patternMatch" -> DzIntDz {reject}
     "~Int" -> DzIntDz {reject}
@@ -1613,10 +1613,10 @@ lexical syntax
     "#substituteBinder2" -> DzFloatDz {reject}
     "#substMap" -> DzFloatDz {reject}
     "#isTCPError" -> DzFloatDz {reject}
-    "par" -> DzFloatDz {reject}
     "#EISDIR" -> DzFloatDz {reject}
     "#isMapInK" -> DzFloatDz {reject}
     "ltrim" -> DzFloatDz {reject}
+    "parallelSpawn" -> DzFloatDz {reject}
     "=/=List" -> DzFloatDz {reject}
     "#patternMatch" -> DzFloatDz {reject}
     "~Int" -> DzFloatDz {reject}

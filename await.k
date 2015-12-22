@@ -36,7 +36,7 @@ module AWAIT-SYN
                 | "while" "(" BExp ")" Block
                 | "print" "(" AExp ")" ";"              	          [strict]
                 | "await" BExp "protected" Block
-                | Block	"par" Block            
+                | "parallelSpawn" "(" Block "," Block ")" ";"            
 
   syntax Block ::= "{" Stmts "}" | "{" "}" 
                   
@@ -84,6 +84,8 @@ module AWAIT
   rule  false and _ => false
   rule  true  or _ => true
   rule  false or E => E
+  rule randomBool => true                           [random]
+  rule randomBool => false                          [random]
 
   rule  I1:Int + I2:Int => I1 +Int I2
   rule  I1:Int - I2:Int => I1 -Int I2
@@ -157,11 +159,8 @@ module AWAIT
   			<id> T:Int </id>
   			<barrier> S SetItem(T) </barrier>
 
-  rule randomBool => true  [random]
-  rule randomBool => false [random]
-
-  rule Bl1:Block par Bl2:Block => Bl1 [choice]
-  rule Bl1:Block par Bl2:Block => Bl2 [choice]
+  rule parallelSpawn ( Bl1:Block , Bl2:Block ) ; => Bl1 [choice]
+  rule parallelSpawn ( Bl1:Block , Bl2:Block ) ; => Bl2 [choice]
 
   syntax UDF ::= "remove" Int ";"
 

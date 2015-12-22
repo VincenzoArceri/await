@@ -461,7 +461,6 @@ context-free syntax
     "#substituteKArrow" "(" InsertDzK "," InsertDzMap "," InsertDzK "," InsertDzK ")" -> K {cons("K1357Syn")}
     "await" InsertDzBExp "protected" Block -> Stmt {cons("Stmt1498Syn")}
     "#noIO" -> Stream {cons("Stream1434Syn")}
-    Block "par" Block -> Stmt {cons("Stmt1499Syn")}
     "{" "}" -> Block {cons("Block1502Syn")}
     "rtrim" "(" InsertDzString ")" -> String {cons("String1227Syn")}
     "isBounding" "(" InsertDzKLabel "," InsertDzInt ")" -> Bool {cons("Bool1330Syn")}
@@ -614,6 +613,7 @@ context-free syntax
     K "|->" K -> MyMap {cons("MyMap1455Syn")}
     "isBound" "(" InsertDzKLabel "," InsertDzInt ")" -> Bool {cons("Bool1329Syn")}
     String ">String" String -> Bool {cons("Bool1232Syn")}
+    "parallelSpawn" "(" InsertDzBlock "," InsertDzBlock ")" ";" -> Stmt {cons("Stmt1499Syn")}
     "#substituteBinder2" "(" InsertDzK "," InsertDzMap "," InsertDzK "," InsertDzK ")" -> K {cons("K1360Syn")}
     "#buffer" "(" InsertDzK ")" -> Stream {cons("Stream1IOBufferSyn")}
     "#tokenToString" "(" InsertDzK ")" -> String {cons("String1242Syn")}
@@ -1170,12 +1170,12 @@ lexical syntax
     "#substituteBinder2" -> DzStringDz {reject}
     "#substMap" -> DzStringDz {reject}
     "#isTCPError" -> DzStringDz {reject}
-    "par" -> DzStringDz {reject}
     "#EISDIR" -> DzStringDz {reject}
     "#parseInput" -> DzStringDz {reject}
     "#isMapInK" -> DzStringDz {reject}
     "=/=List" -> DzStringDz {reject}
     "ltrim" -> DzStringDz {reject}
+    "parallelSpawn" -> DzStringDz {reject}
     "#patternMatch" -> DzStringDz {reject}
     "#istream" -> DzStringDz {reject}
     "==K" -> DzStringDz {reject}
@@ -1499,12 +1499,12 @@ lexical syntax
     "#substituteBinder2" -> DzIntDz {reject}
     "#substMap" -> DzIntDz {reject}
     "#isTCPError" -> DzIntDz {reject}
-    "par" -> DzIntDz {reject}
     "#EISDIR" -> DzIntDz {reject}
     "#parseInput" -> DzIntDz {reject}
     "#isMapInK" -> DzIntDz {reject}
     "=/=List" -> DzIntDz {reject}
     "ltrim" -> DzIntDz {reject}
+    "parallelSpawn" -> DzIntDz {reject}
     "#patternMatch" -> DzIntDz {reject}
     "#istream" -> DzIntDz {reject}
     "==K" -> DzIntDz {reject}
@@ -1828,12 +1828,12 @@ lexical syntax
     "#substituteBinder2" -> DzFloatDz {reject}
     "#substMap" -> DzFloatDz {reject}
     "#isTCPError" -> DzFloatDz {reject}
-    "par" -> DzFloatDz {reject}
     "#EISDIR" -> DzFloatDz {reject}
     "#parseInput" -> DzFloatDz {reject}
     "#isMapInK" -> DzFloatDz {reject}
     "=/=List" -> DzFloatDz {reject}
     "ltrim" -> DzFloatDz {reject}
+    "parallelSpawn" -> DzFloatDz {reject}
     "#patternMatch" -> DzFloatDz {reject}
     "#istream" -> DzFloatDz {reject}
     "==K" -> DzFloatDz {reject}
