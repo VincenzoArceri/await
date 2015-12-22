@@ -149,6 +149,7 @@ context-free priorities
     Stmt -> K
     Bool -> K
     Char -> K
+    UDdF -> K
     Ids -> K
     Stream -> K
     TCPAnswer -> K
@@ -197,6 +198,7 @@ context-free priorities
     K -> Stmt
     K -> Bool
     K -> Char
+    K -> UDdF
     K -> Ids
     K -> Stream
     K -> TCPAnswer
@@ -230,6 +232,7 @@ context-free priorities
     Stmt -> K
     Bool -> K
     Char -> K
+    UDdF -> K
     Ids -> K
     Stream -> K
     TCPAnswer -> K
@@ -259,6 +262,7 @@ context-free priorities
     K -> Stmt
     K -> Bool
     K -> Char
+    K -> UDdF
     K -> Ids
     K -> Stream
     K -> TCPAnswer
@@ -292,6 +296,7 @@ context-free priorities
     K -> Stmt
     K -> Bool
     K -> Char
+    K -> UDdF
     K -> Ids
     K -> Stream
     K -> TCPAnswer
@@ -321,6 +326,7 @@ context-free priorities
     Stmt -> K
     Bool -> K
     Char -> K
+    UDdF -> K
     Ids -> K
     Stream -> K
     TCPAnswer -> K
@@ -410,8 +416,9 @@ context-free syntax
     "$hasMapping" "(" InsertDzMap "," InsertDzK ")" -> Bool {cons("Bool1276Syn")}
     "lengthList" List -> Int {cons("Int1290Syn")}
     KList "=/=KList" KList -> Bool {cons("Bool136Syn")}
+    "remove" InsertDzInt ";" -> UDdF {cons("UDdF1504Syn")}
     "isBuiltin" "(" InsertDzK ")" -> Bool {cons("Bool1304Syn")}
-    "{" InsertDzStmts "}" -> Block {cons("Block1498Syn")}
+    "{" InsertDzStmts "}" -> Block {cons("Block1500Syn")}
     MySet "," MySet -> MySet {left, cons("MySet1445Syn")}
     Map "[" InsertDzMap "]" -> Map {cons("Map1UpdateMapWithMapSyn")}
     "#isMapInK" "(" InsertDzK ")" -> Bool {cons("Bool1279Syn")}
@@ -453,7 +460,7 @@ context-free syntax
     "#substituteKArrow" "(" InsertDzK "," InsertDzMap "," InsertDzK "," InsertDzK ")" -> K {cons("K1357Syn")}
     "await" InsertDzBExp "protected" Block -> Stmt {cons("Stmt1497Syn")}
     "#noIO" -> Stream {cons("Stream1434Syn")}
-    "{" "}" -> Block {cons("Block1499Syn")}
+    "{" "}" -> Block {cons("Block1502Syn")}
     "rtrim" "(" InsertDzString ")" -> String {cons("String1227Syn")}
     "isBounding" "(" InsertDzKLabel "," InsertDzInt ")" -> Bool {cons("Bool1330Syn")}
     "#ENOTDIR" -> TCPError {cons("TCPError1249Syn")}
@@ -486,7 +493,7 @@ context-free syntax
     "#getc" "(" InsertDzInt ")" -> KItem {cons("KItem1403Syn")}
     "isMatching" "(" InsertDzKList "," InsertDzKList ")" -> Bool {cons("Bool1305Syn")}
     Ddecl -> Stmt {}
-    Stmts Stmts -> Stmts {right, cons("Stmts1500Syn")}
+    Stmts Stmts -> Stmts {right, cons("Stmts1503Syn")}
     Map "[" InsertDzKList "/" InsertDzKList "]" -> Map {cons("Map1273Syn")}
     "#tcpRequest" "(" InsertDzString ")" -> TCPAnswer {cons("TCPAnswer1258Syn")}
     ".MyList" -> MyList {cons("MyList1466Syn")}
@@ -517,6 +524,7 @@ context-free syntax
     "#splitedBinder" "(" InsertDzKList "," InsertDzKList "," InsertDzSet ")" -> K {cons("K1332Syn")}
     "#freeVarsBinder1" "(" InsertDzK "," InsertDzSet ")" -> K {cons("K1347Syn")}
     String "+String" String -> String {left, cons("String194Syn")}
+    Block "+" Block -> Stmt {cons("Stmt1499Syn")}
     "#freeVarsBinder2" "(" InsertDzK "," InsertDzK ")" -> K {cons("K1348Syn")}
     "isVariable" "(" InsertDzSet ")" -> Bool {cons("Bool1384Syn")}
     Int "=/=Int" Int -> Bool {left, cons("Bool173Syn")}
@@ -579,6 +587,7 @@ context-free syntax
     "#" K -> KLabel {cons("KLabel1300Syn")}
     "K2SMTLib" "(" InsertDzK ")" -> String {cons("String1376Syn")}
     "getKLabel" K -> KLabel {cons("KLabel1299Syn")}
+    Block "||" Block -> Stmt {cons("Stmt1498Syn")}
     "print" "(" InsertDzAExp ")" ";" -> Stmt {cons("Stmt1496Syn")}
     "#boundVars" "(" InsertDzK ")" -> K {cons("K1334Syn")}
     Stmt -> Stmts {}
@@ -675,6 +684,7 @@ context-free syntax
     VARID  ":Stmt"        -> StmtDzVar            {cons("Stmt12Var")}
     VARID  ":Bool"        -> BoolDzVar            {cons("Bool12Var")}
     VARID  ":Char"        -> CharDzVar            {cons("Char12Var")}
+    VARID  ":UDF"        -> UDdFDzVar            {cons("UDdF12Var")}
     VARID  ":Ids"        -> IdsDzVar            {cons("Ids12Var")}
     VARID  ":Stream"        -> StreamDzVar            {cons("Stream12Var")}
     VARID  ":TCPAnswer"        -> TCPAnswerDzVar            {cons("TCPAnswer12Var")}
@@ -704,6 +714,7 @@ context-free syntax
      K CastTypeDz "Stmt"    -> StmtDzVar    {cons("Stmt1Cast")}
      K CastTypeDz "Bool"    -> BoolDzVar    {cons("Bool1Cast")}
      K CastTypeDz "Char"    -> CharDzVar    {cons("Char1Cast")}
+     K CastTypeDz "UDF"    -> UDdFDzVar    {cons("UDdF1Cast")}
      K CastTypeDz "Ids"    -> IdsDzVar    {cons("Ids1Cast")}
      K CastTypeDz "Stream"    -> StreamDzVar    {cons("Stream1Cast")}
      K CastTypeDz "TCPAnswer"    -> TCPAnswerDzVar    {cons("TCPAnswer1Cast")}
@@ -732,6 +743,7 @@ context-free syntax
      StmtDzVar   -> Stmt
      BoolDzVar   -> Bool
      CharDzVar   -> Char
+     UDdFDzVar   -> UDdF
      IdsDzVar   -> Ids
      StreamDzVar   -> Stream
      TCPAnswerDzVar   -> TCPAnswer
@@ -775,6 +787,7 @@ context-free restrictions
     StmtDzVar -/- [a-zA-Z0-9]
     BoolDzVar -/- [a-zA-Z0-9]
     CharDzVar -/- [a-zA-Z0-9]
+    UDdFDzVar -/- [a-zA-Z0-9]
     IdsDzVar -/- [a-zA-Z0-9]
     StreamDzVar -/- [a-zA-Z0-9]
     TCPAnswerDzVar -/- [a-zA-Z0-9]
@@ -848,6 +861,9 @@ lexical syntax
     "isChar"      -> DzKLabel
     "isSymbolicChar"      -> DzKLabel
     "#symChar"      -> DzKLabel
+    "isUDF"      -> DzKLabel
+    "isSymbolicUDF"      -> DzKLabel
+    "#symUDF"      -> DzKLabel
     "isIds"      -> DzKLabel
     "isSymbolicIds"      -> DzKLabel
     "#symIds"      -> DzKLabel
@@ -1177,6 +1193,7 @@ lexical syntax
     ">Int" -> DzStringDz {reject}
     "#open" -> DzStringDz {reject}
     "replaceAll" -> DzStringDz {reject}
+    "remove" -> DzStringDz {reject}
     "#ESPIPE" -> DzStringDz {reject}
     "==KList" -> DzStringDz {reject}
     "==KLabel" -> DzStringDz {reject}
@@ -1296,6 +1313,7 @@ lexical syntax
     "SMTLibQuery" -> DzStringDz {reject}
     "#ENOENT" -> DzStringDz {reject}
     "#rebind2" -> DzStringDz {reject}
+    "||" -> DzStringDz {reject}
     "#rebind1" -> DzStringDz {reject}
     "<=" -> DzStringDz {reject}
     "List2KLabel" -> DzStringDz {reject}
@@ -1503,6 +1521,7 @@ lexical syntax
     ">Int" -> DzIntDz {reject}
     "#open" -> DzIntDz {reject}
     "replaceAll" -> DzIntDz {reject}
+    "remove" -> DzIntDz {reject}
     "#ESPIPE" -> DzIntDz {reject}
     "==KList" -> DzIntDz {reject}
     "==KLabel" -> DzIntDz {reject}
@@ -1622,6 +1641,7 @@ lexical syntax
     "SMTLibQuery" -> DzIntDz {reject}
     "#ENOENT" -> DzIntDz {reject}
     "#rebind2" -> DzIntDz {reject}
+    "||" -> DzIntDz {reject}
     "#rebind1" -> DzIntDz {reject}
     "<=" -> DzIntDz {reject}
     "List2KLabel" -> DzIntDz {reject}
@@ -1829,6 +1849,7 @@ lexical syntax
     ">Int" -> DzFloatDz {reject}
     "#open" -> DzFloatDz {reject}
     "replaceAll" -> DzFloatDz {reject}
+    "remove" -> DzFloatDz {reject}
     "#ESPIPE" -> DzFloatDz {reject}
     "==KList" -> DzFloatDz {reject}
     "==KLabel" -> DzFloatDz {reject}
@@ -1948,6 +1969,7 @@ lexical syntax
     "SMTLibQuery" -> DzFloatDz {reject}
     "#ENOENT" -> DzFloatDz {reject}
     "#rebind2" -> DzFloatDz {reject}
+    "||" -> DzFloatDz {reject}
     "#rebind1" -> DzFloatDz {reject}
     "<=" -> DzFloatDz {reject}
     "List2KLabel" -> DzFloatDz {reject}

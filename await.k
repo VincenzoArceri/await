@@ -1,9 +1,7 @@
 module AWAIT-SYN
-	
 	syntax Decl ::= "int" Ids ";"
 
-
-  syntax AExp ::= Int | Id
+	syntax AExp ::= Int | Id
                 | "-" AExp                [strict]
                 > "read" "(" ")"          
                 | AExp "/" AExp           [strict, left]
@@ -37,6 +35,8 @@ module AWAIT-SYN
                 | "while" "(" BExp ")" Block
                 | "print" "(" AExp ")" ";"              	          [strict]
                 | "await" BExp "protected" Block
+                | Block	"||" Block	//TODO
+                | Block "+" Block		//TODO			
 
   syntax Block ::= "{" Stmts "}" | "{" "}" 
                   
@@ -56,7 +56,7 @@ module AWAIT
 	imports SUBSTITUTION
 	imports BUILTIN-SYNTAX-HOOKS
 
-  syntax Val ::= Int | Bool 
+  syntax Val ::= Int | Bool
   syntax KResult ::= Val
 
   configuration <T color="red">
@@ -105,10 +105,14 @@ module AWAIT
   rule  while (E) S => if (E) { S while(E) S }  	   [structural]
 
   rule 	<k> read() => I ...</k> 
-  		  <in> ListItem(I:Int) => .List ...</in> [read]
+  		  <in> ListItem(I:Int) => .List ...</in> 
+  		  <id> T:Int </id>
+  		  <barrier> Barrier:Set </barrier> when (T in Barrier) [read]
 
   rule 	<k> print(I:Int) ; => I ;... </k> 
-  		  <out>... .List => ListItem(I) </out> [print]
+  		  <out>... .List => ListItem(I) </out>  		  
+  		  <id> T:Int </id>
+  		  <barrier> Barrier:Set </barrier> when (T in Barrier) [print]
 
   rule  _:Int ; => .K
 
@@ -136,7 +140,9 @@ module AWAIT
 
 	rule  <k> X:Id = I:Int ; => I; ... </k>
 		    <env> ... X |-> N:Int ... </env>
-		    <store> ... N |-> (_ => I) </store> [assignment]
+		    <store> ... N |-> (_ => I) </store>
+		    <id> T:Int </id>
+  		  <barrier> Barrier:Set </barrier> when (T in Barrier) [assignment]
 
   rule  S1:Stmts S2:Stmts => S1 ~> S2  [structural]
 
@@ -147,7 +153,13 @@ module AWAIT
 
   rule false ~> await B:BExp protected Bl:Block => await B protected Bl
 
-  rule true ~> await B:BExp protected Bl:Block => Bl 
-       
+  rule 	<k> true ~> await B:BExp protected Bl:Block => Bl ~> remove T ;... </k>
+  			<id> T:Int </id>
+  			<barrier> S SetItem(T) </barrier>
+
+  syntax UDF ::= "remove" Int ";"
+
+  rule	<k> remove T:Int ; => .K ... </k>
+  			<barrier> Barrier:Set => Barrier -Set SetItem(T) </barrier>
 
 endmodule
