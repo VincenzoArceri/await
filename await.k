@@ -17,8 +17,8 @@ module AWAIT-SYN
                 | AExp "<=" AExp          [strict, non-assoc]
                 | AExp ">" AExp           [strict, non-assoc]
                 | AExp ">=" AExp          [strict, non-assoc]
-                | AExp "==" AExp          [strict, non-assoc]
-                | AExp "!=" AExp          [strict, non-assoc]
+                | AExp "==" AExp          [strict]
+                | AExp "!=" AExp          [strict]
                 | "!" BExp                [strict]
                 > BExp "and" BExp         [strict(1), left]
                 | BExp "or" BExp          [strict(1), left]
@@ -36,7 +36,7 @@ module AWAIT-SYN
                 | "while" "(" BExp ")" Block
                 | "print" "(" AExp ")" ";"              	          [strict]
                 | "await" BExp "protected" Block
-                | "parallelSpawn" "(" Block "," Block ")" ";"            
+                | "exclusiveSpawn" "(" Block "," Block ")" ";"            
 
   syntax Block ::= "{" Stmts "}" | "{" "}" 
                   
@@ -68,7 +68,6 @@ module AWAIT
                     </thread>
                   </threads>
 
-                  <genv color="pink"> .Map </genv>
                   <store color="white"> .Map </store>
                   
                   <streams>
@@ -159,15 +158,13 @@ module AWAIT
   			<id> T:Int </id>
   			<barrier> S SetItem(T) </barrier>
 
-  rule parallelSpawn ( Bl1:Block , Bl2:Block ) ; => Bl1 [choice]
-  rule parallelSpawn ( Bl1:Block , Bl2:Block ) ; => Bl2 [choice]
-
   syntax UDF ::= "remove" Int ";"
 
-  rule	<k> remove T:Int ; => .K ... </k>
-  			<barrier> Barrier:Set => Barrier -Set SetItem(T) </barrier>
+  rule  <k> remove T:Int ; => .K ... </k>
+        <barrier> Barrier:Set => Barrier -Set SetItem(T) </barrier>
 
 
-
+  rule exclusiveSpawn ( Bl1:Block , Bl2:Block ) ; => Bl1 [choice]
+  rule exclusiveSpawn ( Bl1:Block , Bl2:Block ) ; => Bl2 [choice]
 
 endmodule

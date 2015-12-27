@@ -2,8 +2,7 @@ int x;
 
 x = 0;
 
-parallelSpawn(
+exclusiveSpawn(
 	{ x = 1; }, 
-
 	{ x = 3; x = 2; }
 );

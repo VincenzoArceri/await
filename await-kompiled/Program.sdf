@@ -95,8 +95,8 @@ context-free priorities
     AExp "<=" AExp -> BExp {non-assoc, cons("BExp1482Syn")}
     AExp ">" AExp -> BExp {non-assoc, cons("BExp1483Syn")}
     AExp ">=" AExp -> BExp {non-assoc, cons("BExp1484Syn")}
-    AExp "==" AExp -> BExp {non-assoc, cons("BExp1485Syn")}
-    AExp "!=" AExp -> BExp {non-assoc, cons("BExp1486Syn")}
+    AExp "==" AExp -> BExp {cons("BExp1485Syn")}
+    AExp "!=" AExp -> BExp {cons("BExp1486Syn")}
     "!" BExp -> BExp {cons("BExp1487Syn")}
 } > {
     BExp "and" BExp -> BExp {left, cons("BExp1488Syn")}
@@ -146,6 +146,7 @@ context-free syntax
     "String2Char" "(" InsertDzString ")" -> Char {cons("Char1237Syn")}
     "#map" "(" InsertDzMap ")" -> K {cons("K1278Syn")}
     "isSymbolicBag" "(" InsertDzBag ")" -> K {cons("K1392Syn")}
+    "exclusiveSpawn" "(" InsertDzBlock "," InsertDzBlock ")" ";" -> Stmt {cons("Stmt1499Syn")}
     "if" "(" InsertDzBExp ")" Block -> Stmt {cons("Stmt1495Syn")}
     "getMatching" "(" InsertDzKList "," InsertDzKList ")" -> Map {cons("Map1306Syn")}
     "intersectSet" "(" InsertDzSet "," InsertDzSet ")" -> Set {cons("Set1286Syn")}
@@ -343,7 +344,6 @@ context-free syntax
     "Set2KLabel" Set -> KLabel {cons("KLabel1296Syn")}
     "isBound" "(" InsertDzKLabel "," InsertDzInt ")" -> Bool {cons("Bool1329Syn")}
     String ">String" String -> Bool {cons("Bool1232Syn")}
-    "parallelSpawn" "(" InsertDzBlock "," InsertDzBlock ")" ";" -> Stmt {cons("Stmt1499Syn")}
     "#substituteBinder2" "(" InsertDzK "," InsertDzMap "," InsertDzK "," InsertDzK ")" -> K {cons("K1360Syn")}
     "#tokenToString" "(" InsertDzK ")" -> String {cons("String1242Syn")}
     "Char2String" "(" InsertDzChar ")" -> String {cons("String1236Syn")}
@@ -383,8 +383,8 @@ context-free syntax
     KLabel -> InsertDzKLabel
     Bool -> InsertDzBool
     Char -> InsertDzChar
-    Ids -> InsertDzIds
     Block -> InsertDzBlock
+    Ids -> InsertDzIds
     List -> InsertDzList
     Id -> InsertDzId
     Map -> InsertDzMap
@@ -462,6 +462,7 @@ lexical syntax
     "forall" -> IdDz {reject}
     "undef" -> IdDz {reject}
     "SMTCall" -> IdDz {reject}
+    "exclusiveSpawn" -> IdDz {reject}
     "isKResult" -> IdDz {reject}
     "xorInt" -> IdDz {reject}
     "notBool" -> IdDz {reject}
@@ -469,7 +470,6 @@ lexical syntax
     "randomBool" -> IdDz {reject}
     "lengthString" -> IdDz {reject}
     "ltrim" -> IdDz {reject}
-    "parallelSpawn" -> IdDz {reject}
     "isBuiltin" -> IdDz {reject}
     "orBool" -> IdDz {reject}
     "isSymbolicBag" -> IdDz {reject}
@@ -732,6 +732,7 @@ lexical syntax
     "#patternMatch1" -> DzStringDz {reject}
     "{" -> DzStringDz {reject}
     "}" -> DzStringDz {reject}
+    "exclusiveSpawn" -> DzStringDz {reject}
     "isKResult" -> DzStringDz {reject}
     "#if" -> DzStringDz {reject}
     "xorInt" -> DzStringDz {reject}
@@ -755,7 +756,6 @@ lexical syntax
     "#EISDIR" -> DzStringDz {reject}
     "#isMapInK" -> DzStringDz {reject}
     "ltrim" -> DzStringDz {reject}
-    "parallelSpawn" -> DzStringDz {reject}
     "=/=List" -> DzStringDz {reject}
     "#patternMatch" -> DzStringDz {reject}
     "~Int" -> DzStringDz {reject}
@@ -1019,6 +1019,7 @@ lexical syntax
     "#patternMatch1" -> IdDz {reject}
     "{" -> IdDz {reject}
     "}" -> IdDz {reject}
+    "exclusiveSpawn" -> IdDz {reject}
     "isKResult" -> IdDz {reject}
     "#if" -> IdDz {reject}
     "xorInt" -> IdDz {reject}
@@ -1042,7 +1043,6 @@ lexical syntax
     "#EISDIR" -> IdDz {reject}
     "#isMapInK" -> IdDz {reject}
     "ltrim" -> IdDz {reject}
-    "parallelSpawn" -> IdDz {reject}
     "=/=List" -> IdDz {reject}
     "#patternMatch" -> IdDz {reject}
     "~Int" -> IdDz {reject}
@@ -1306,6 +1306,7 @@ lexical syntax
     "#patternMatch1" -> DzIntDz {reject}
     "{" -> DzIntDz {reject}
     "}" -> DzIntDz {reject}
+    "exclusiveSpawn" -> DzIntDz {reject}
     "isKResult" -> DzIntDz {reject}
     "#if" -> DzIntDz {reject}
     "xorInt" -> DzIntDz {reject}
@@ -1329,7 +1330,6 @@ lexical syntax
     "#EISDIR" -> DzIntDz {reject}
     "#isMapInK" -> DzIntDz {reject}
     "ltrim" -> DzIntDz {reject}
-    "parallelSpawn" -> DzIntDz {reject}
     "=/=List" -> DzIntDz {reject}
     "#patternMatch" -> DzIntDz {reject}
     "~Int" -> DzIntDz {reject}
@@ -1593,6 +1593,7 @@ lexical syntax
     "#patternMatch1" -> DzFloatDz {reject}
     "{" -> DzFloatDz {reject}
     "}" -> DzFloatDz {reject}
+    "exclusiveSpawn" -> DzFloatDz {reject}
     "isKResult" -> DzFloatDz {reject}
     "#if" -> DzFloatDz {reject}
     "xorInt" -> DzFloatDz {reject}
@@ -1616,7 +1617,6 @@ lexical syntax
     "#EISDIR" -> DzFloatDz {reject}
     "#isMapInK" -> DzFloatDz {reject}
     "ltrim" -> DzFloatDz {reject}
-    "parallelSpawn" -> DzFloatDz {reject}
     "=/=List" -> DzFloatDz {reject}
     "#patternMatch" -> DzFloatDz {reject}
     "~Int" -> DzFloatDz {reject}

@@ -126,8 +126,8 @@ context-free priorities
     AExp "<=" AExp -> BExp {non-assoc, cons("BExp1482Syn")}
     AExp ">" AExp -> BExp {non-assoc, cons("BExp1483Syn")}
     AExp ">=" AExp -> BExp {non-assoc, cons("BExp1484Syn")}
-    AExp "==" AExp -> BExp {non-assoc, cons("BExp1485Syn")}
-    AExp "!=" AExp -> BExp {non-assoc, cons("BExp1486Syn")}
+    AExp "==" AExp -> BExp {cons("BExp1485Syn")}
+    AExp "!=" AExp -> BExp {cons("BExp1486Syn")}
     "!" BExp -> BExp {cons("BExp1487Syn")}
 } > {
     BExp "and" BExp -> BExp {left, cons("BExp1488Syn")}
@@ -370,6 +370,7 @@ context-free syntax
     Map "(" InsertDzK ")" -> K {cons("K1269Syn")}
     "#map" "(" InsertDzMap ")" -> K {cons("K1278Syn")}
     "isSymbolicBag" "(" InsertDzBag ")" -> K {cons("K1392Syn")}
+    "exclusiveSpawn" "(" InsertDzBlock "," InsertDzBlock ")" ";" -> Stmt {cons("Stmt1499Syn")}
     "if" "(" InsertDzBExp ")" Block -> Stmt {cons("Stmt1495Syn")}
     "getMatching" "(" InsertDzKList "," InsertDzKList ")" -> Map {cons("Map1306Syn")}
     "intersectSet" "(" InsertDzSet "," InsertDzSet ")" -> Set {cons("Set1286Syn")}
@@ -613,7 +614,6 @@ context-free syntax
     K "|->" K -> MyMap {cons("MyMap1455Syn")}
     "isBound" "(" InsertDzKLabel "," InsertDzInt ")" -> Bool {cons("Bool1329Syn")}
     String ">String" String -> Bool {cons("Bool1232Syn")}
-    "parallelSpawn" "(" InsertDzBlock "," InsertDzBlock ")" ";" -> Stmt {cons("Stmt1499Syn")}
     "#substituteBinder2" "(" InsertDzK "," InsertDzMap "," InsertDzK "," InsertDzK ")" -> K {cons("K1360Syn")}
     "#buffer" "(" InsertDzK ")" -> Stream {cons("Stream1IOBufferSyn")}
     "#tokenToString" "(" InsertDzK ")" -> String {cons("String1242Syn")}
@@ -663,8 +663,8 @@ context-free syntax
     Bool    -> InsertDzBool
     Char    -> InsertDzChar
     MyList    -> InsertDzMyList
-    Ids    -> InsertDzIds
     Block    -> InsertDzBlock
+    Ids    -> InsertDzIds
     List    -> InsertDzList
     TCPAnswer    -> InsertDzTCPAnswer
     Id    -> InsertDzId
@@ -1149,6 +1149,7 @@ lexical syntax
     "#patternMatch1" -> DzStringDz {reject}
     "{" -> DzStringDz {reject}
     "}" -> DzStringDz {reject}
+    "exclusiveSpawn" -> DzStringDz {reject}
     "#if" -> DzStringDz {reject}
     "isKResult" -> DzStringDz {reject}
     "xorInt" -> DzStringDz {reject}
@@ -1175,7 +1176,6 @@ lexical syntax
     "#isMapInK" -> DzStringDz {reject}
     "=/=List" -> DzStringDz {reject}
     "ltrim" -> DzStringDz {reject}
-    "parallelSpawn" -> DzStringDz {reject}
     "#patternMatch" -> DzStringDz {reject}
     "#istream" -> DzStringDz {reject}
     "==K" -> DzStringDz {reject}
@@ -1478,6 +1478,7 @@ lexical syntax
     "#patternMatch1" -> DzIntDz {reject}
     "{" -> DzIntDz {reject}
     "}" -> DzIntDz {reject}
+    "exclusiveSpawn" -> DzIntDz {reject}
     "#if" -> DzIntDz {reject}
     "isKResult" -> DzIntDz {reject}
     "xorInt" -> DzIntDz {reject}
@@ -1504,7 +1505,6 @@ lexical syntax
     "#isMapInK" -> DzIntDz {reject}
     "=/=List" -> DzIntDz {reject}
     "ltrim" -> DzIntDz {reject}
-    "parallelSpawn" -> DzIntDz {reject}
     "#patternMatch" -> DzIntDz {reject}
     "#istream" -> DzIntDz {reject}
     "==K" -> DzIntDz {reject}
@@ -1807,6 +1807,7 @@ lexical syntax
     "#patternMatch1" -> DzFloatDz {reject}
     "{" -> DzFloatDz {reject}
     "}" -> DzFloatDz {reject}
+    "exclusiveSpawn" -> DzFloatDz {reject}
     "#if" -> DzFloatDz {reject}
     "isKResult" -> DzFloatDz {reject}
     "xorInt" -> DzFloatDz {reject}
@@ -1833,7 +1834,6 @@ lexical syntax
     "#isMapInK" -> DzFloatDz {reject}
     "=/=List" -> DzFloatDz {reject}
     "ltrim" -> DzFloatDz {reject}
-    "parallelSpawn" -> DzFloatDz {reject}
     "#patternMatch" -> DzFloatDz {reject}
     "#istream" -> DzFloatDz {reject}
     "==K" -> DzFloatDz {reject}
