@@ -1,3 +1,7 @@
+/**
+  * To compile kompile --transition "lookup,read,assignment,print,random, choice" await.k
+  */
+
 module AWAIT-SYN
 	syntax Decl ::= "int" Ids ";"
 
@@ -75,7 +79,7 @@ module AWAIT
                   	<out color="brown" stream="stdout"> .List </out>
                   </streams>
 
-                  <barrier> SetItem(0) </barrier>
+                  <barrier color="blue"> -1 </barrier>
                 </T>
 
   rule  ! T:Bool => notBool(T)
@@ -83,6 +87,7 @@ module AWAIT
   rule  false and _ => false
   rule  true  or _ => true
   rule  false or E => E
+
   rule randomBool => true                           [random]
   rule randomBool => false                          [random]
 
@@ -108,12 +113,12 @@ module AWAIT
   rule 	<k> read() => I ...</k> 
   		  <in> ListItem(I:Int) => .List ...</in> 
   		  <id> T:Int </id>
-  		  <barrier> Barrier:Set </barrier> when (T in Barrier) [read]
+  		  <barrier> B:Int </barrier> when ( B ==Int T orElseBool B ==Int -1) [read]
 
   rule 	<k> print(I:Int) ; => I ;... </k> 
   		  <out>... .List => ListItem(I) </out>  		  
   		  <id> T:Int </id>
-  		  <barrier> Barrier:Set </barrier> when (T in Barrier) [print]
+        <barrier> B:Int </barrier> when ( B ==Int T orElseBool B ==Int -1) [print]
 
   rule  _:Int ; => .K
 
@@ -122,7 +127,7 @@ module AWAIT
         <store>... L |-> I:Int ...</store>  [lookup]
 
   rule  <thread>...
-          <k> spawn S:Block => T:Int ; ...</k>
+          <k> spawn { S:Stmts } => T:Int ; ...</k>
           <env> Env:Map </env>
        ...</thread>
        (. => <thread>...
@@ -131,7 +136,7 @@ module AWAIT
                <id> T </id>
          ... </thread>) when fresh(T:Int)
 
-  rule <thread> ... <k> . </k>  ... </thread> => .
+  rule <thread> ... <k> .K </k> <id> T:Int </id> ... </thread> => . when T =/=Int 0// Elimino le thread quando hanno terminato
 
   rule  <k> int (X:Id,X1:Ids => X1) ; ... </k>
 		    <env> Rho:Map => Rho[L:Int/X] </env>
@@ -143,12 +148,20 @@ module AWAIT
 		    <env> ... X |-> N:Int ... </env>
 		    <store> ... N |-> (_ => I) </store>
 		    <id> T:Int </id>
-  		  <barrier> Barrier:Set </barrier> when (T in Barrier) [assignment]
+        <barrier> B:Int </barrier> when (B ==Int -1) orElseBool (B ==Int T) [assignment]
 
   rule  S1:Stmts S2:Stmts => S1 ~> S2  [structural]
 
-  rule  { S:Stmts } => S
-  rule { } => .K
+  //rule { S:Stmts } => S 
+  //rule { } => .K
+
+  syntax K ::= env(Map)
+
+  rule <k> { S:Stmts } => S ~> env(Rho) ... </k>
+       <env> Rho:Map </env>                 [structural]
+
+  rule <k> env(Rho:Map) => . ... </k>
+       <env> _ => Rho </env>
 
   rule await B:BExp protected Bl:Block =>  B ~> await B protected Bl
 
@@ -156,15 +169,15 @@ module AWAIT
 
   rule 	<k> true ~> await B:BExp protected Bl:Block => Bl ~> remove T ;... </k>
   			<id> T:Int </id>
-  			<barrier> S SetItem(T) </barrier>
+  			<barrier> _ => T </barrier>
 
   syntax UDF ::= "remove" Int ";"
 
   rule  <k> remove T:Int ; => .K ... </k>
-        <barrier> Barrier:Set => Barrier -Set SetItem(T) </barrier>
+        <barrier> _ => -1 </barrier>
 
 
-  rule exclusiveSpawn ( Bl1:Block , Bl2:Block ) ; => Bl1 [choice]
-  rule exclusiveSpawn ( Bl1:Block , Bl2:Block ) ; => Bl2 [choice]
+  rule exclusiveSpawn ( Bl1:Block , Bl2:Block ) ; => spawn Bl1 [choice]
+  rule exclusiveSpawn ( Bl1:Block , Bl2:Block ) ; => spawn Bl2 [choice]
 
 endmodule

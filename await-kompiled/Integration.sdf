@@ -418,7 +418,7 @@ context-free syntax
     "$hasMapping" "(" InsertDzMap "," InsertDzK ")" -> Bool {cons("Bool1276Syn")}
     "lengthList" List -> Int {cons("Int1290Syn")}
     KList "=/=KList" KList -> Bool {cons("Bool136Syn")}
-    "remove" InsertDzInt ";" -> UDdF {cons("UDdF1504Syn")}
+    "remove" InsertDzInt ";" -> UDdF {cons("UDdF1505Syn")}
     "isBuiltin" "(" InsertDzK ")" -> Bool {cons("Bool1304Syn")}
     "{" InsertDzStmts "}" -> Block {cons("Block1500Syn")}
     MySet "," MySet -> MySet {left, cons("MySet1445Syn")}
@@ -475,6 +475,7 @@ context-free syntax
     "#rebind2" "(" InsertDzK "," InsertDzInt "," InsertDzMap "," InsertDzK ")" -> K {cons("K1366Syn")}
     "size" "(" InsertDzMyList ")" -> Int {cons("Int1469Syn")}
     "#isTCPError" "(" InsertDzString ")" -> Bool {cons("Bool1263Syn")}
+    "env" "(" InsertDzMap ")" -> K {cons("K1504Syn")}
     "#freezer" K -> KLabel {cons("KLabel1302Syn")}
     "isEmptySet" "(" InsertDzSet ")" -> Bool {cons("Bool1287Syn")}
     "replaceAll" "(" InsertDzString "," InsertDzString "," InsertDzString ")" -> String {cons("String1220Syn")}
@@ -1217,6 +1218,7 @@ lexical syntax
     "false" -> DzStringDz {reject}
     "^Float" -> DzStringDz {reject}
     "#close" -> DzStringDz {reject}
+    "env" -> DzStringDz {reject}
     "String2Int" -> DzStringDz {reject}
     "#freshSubst" -> DzStringDz {reject}
     "print" -> DzStringDz {reject}
@@ -1546,6 +1548,7 @@ lexical syntax
     "false" -> DzIntDz {reject}
     "^Float" -> DzIntDz {reject}
     "#close" -> DzIntDz {reject}
+    "env" -> DzIntDz {reject}
     "String2Int" -> DzIntDz {reject}
     "#freshSubst" -> DzIntDz {reject}
     "print" -> DzIntDz {reject}
@@ -1875,6 +1878,7 @@ lexical syntax
     "false" -> DzFloatDz {reject}
     "^Float" -> DzFloatDz {reject}
     "#close" -> DzFloatDz {reject}
+    "env" -> DzFloatDz {reject}
     "String2Int" -> DzFloatDz {reject}
     "#freshSubst" -> DzFloatDz {reject}
     "print" -> DzFloatDz {reject}
