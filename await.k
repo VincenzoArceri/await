@@ -152,10 +152,9 @@ module AWAIT
 
   rule  S1:Stmts S2:Stmts => S1 ~> S2  [structural]
 
-  //rule { S:Stmts } => S 
-  //rule { } => .K
-
   syntax K ::= env(Map)
+
+  rule { } =>.K
 
   rule <k> { S:Stmts } => S ~> env(Rho) ... </k>
        <env> Rho:Map </env>                 [structural]
@@ -175,7 +174,6 @@ module AWAIT
 
   rule  <k> remove T:Int ; => .K ... </k>
         <barrier> _ => -1 </barrier>
-
 
   rule exclusiveSpawn ( Bl1:Block , Bl2:Block ) ; => spawn Bl1 [choice]
   rule exclusiveSpawn ( Bl1:Block , Bl2:Block ) ; => spawn Bl2 [choice]

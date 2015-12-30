@@ -2,6 +2,4 @@ int x, y, z;
 
 z = 5;
 
-spawn {
-	x = 99;
-}	
+if (false) { x = 100; } 
